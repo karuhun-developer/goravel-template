@@ -50,6 +50,9 @@ func (s *RolePermissionSeeder) Run() error {
 	facades.Orm().Query().Where("name", "superadmin").FirstOrCreate(&superadminRole, role.Role{Name: "superadmin"})
 	facades.Orm().Query().Where("name", "user").FirstOrCreate(&userRole, role.Role{Name: "user"})
 
+	// Clear cache
+	facades.Cache().Flush()
+
 	// Clear the associations
 	facades.Orm().Query().Model(&superadminRole).Association("Permissions").Clear()
 	facades.Orm().Query().Model(&userRole).Association("Permissions").Clear()

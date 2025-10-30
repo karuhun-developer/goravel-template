@@ -4,15 +4,33 @@ import (
 	"github.com/goravel/framework/contracts/route"
 	"github.com/goravel/framework/facades"
 	systemMiddleware "github.com/goravel/framework/http/middleware"
+	authController "karuhundeveloper.com/gostarterkit/app/http/controllers/v1/auth"
 	"karuhundeveloper.com/gostarterkit/app/http/middleware"
+	authService "karuhundeveloper.com/gostarterkit/app/services/auth"
 )
 
 func V1Auth() {
+	// Services
+	authService := authService.NewAuthService()
+
+	// Controllers
+	authController := authController.NewAuthController(authService)
+
 	// Guest routes
 	facades.Route().Middleware(
 		systemMiddleware.Throttle("api"),
+	).Prefix("api/v1/auth").Group(func (router route.Router) {
+		// Auth routes
+		router.Post("login", authController.Login).Name("api.v1.auth.login")
+
+	})
+
+	// Authenticated routes
+	facades.Route().Middleware(
+		systemMiddleware.Throttle("api"),
 		middleware.AuthJwtMiddleware(),
-	).Prefix("api/v1").Group(func (router route.Router) {
-		// Define authenticated routes here
+	).Prefix("api/v1/auth").Group(func (router route.Router) {
+		// Auth routes
+		router.Post("logout", authController.Logout).Name("api.v1.auth.logout")
 	})
 }
