@@ -10,6 +10,6 @@ type User struct {
 	Name     string
 	Email    string
 	Password string
-	// UserRole  UserRole
+	UserRole  UserRole
 	Roles     []*role.Role `gorm:"many2many:user_roles;joinForeignKey:UserID;JoinReferences:RoleID"`
 }
