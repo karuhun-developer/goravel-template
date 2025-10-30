@@ -4,3 +4,5 @@
 .env.*
 !.env.example
 storage/framework
+*.sqlite
+.~lock*

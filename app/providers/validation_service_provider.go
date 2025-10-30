@@ -4,6 +4,7 @@ import (
 	"github.com/goravel/framework/contracts/foundation"
 	"github.com/goravel/framework/contracts/validation"
 	"github.com/goravel/framework/facades"
+	"karuhundeveloper.com/gostarterkit/app/rules"
 )
 
 type ValidationServiceProvider struct {
@@ -23,7 +24,11 @@ func (receiver *ValidationServiceProvider) Boot(app foundation.Application) {
 }
 
 func (receiver *ValidationServiceProvider) rules() []validation.Rule {
-	return []validation.Rule{}
+	return []validation.Rule{
+		&rules.Unique{},
+		&rules.Exists{},
+		&rules.MaxFileSize{},
+	}
 }
 
 func (receiver *ValidationServiceProvider) filters() []validation.Filter {

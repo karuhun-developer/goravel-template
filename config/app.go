@@ -26,6 +26,7 @@ import (
 	"github.com/goravel/gin"
 	"github.com/goravel/mysql"
 	"github.com/goravel/redis"
+	"github.com/goravel/sqlite"
 
 	"karuhundeveloper.com/gostarterkit/app/providers"
 )
@@ -95,6 +96,7 @@ func init() {
 			&log.ServiceProvider{},
 			&console.ServiceProvider{},
 			&mysql.ServiceProvider{},
+			&sqlite.ServiceProvider{},
 			&database.ServiceProvider{},
 			&redis.ServiceProvider{},
 			&cache.ServiceProvider{},

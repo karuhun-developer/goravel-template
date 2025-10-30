@@ -4,6 +4,7 @@ import (
 	"github.com/goravel/framework/contracts/database/driver"
 	"github.com/goravel/framework/facades"
 	mysqlfacades "github.com/goravel/mysql/facades"
+	sqlitefacades "github.com/goravel/sqlite/facades"
 )
 
 func init() {
@@ -25,6 +26,14 @@ func init() {
 				"singular": false,
 				"via": func() (driver.Driver, error) {
 					return mysqlfacades.Mysql("mysql")
+				},
+			},
+			"sqlite": map[string]any{
+				"database": config.Env("DB_DATABASE", "forge"),
+				"prefix":   "",
+				"singular": false,
+				"via": func() (driver.Driver, error) {
+					return sqlitefacades.Sqlite("sqlite")
 				},
 			},
 		},
