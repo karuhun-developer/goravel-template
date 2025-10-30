@@ -6,3 +6,5 @@
 storage/framework
 *.sqlite
 .~lock*
+.devdbrc
+*.zip

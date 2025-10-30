@@ -15,7 +15,7 @@ func (r *M20210101000001CreateUsersTable) Signature() string {
 // Up Run the migrations.
 func (r *M20210101000001CreateUsersTable) Up() error {
 	return facades.Schema().Create("users", func(table schema.Blueprint) {
-		table.ID("id")
+		table.ID()
 		table.String("name")
 		table.String("email")
 		table.String("password")
