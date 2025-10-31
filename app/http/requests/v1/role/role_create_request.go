@@ -3,6 +3,7 @@ package role
 import (
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/contracts/validation"
+	"karuhundeveloper.com/gostarterkit/app/helpers"
 )
 
 type RoleCreateRequest struct {
@@ -10,6 +11,10 @@ type RoleCreateRequest struct {
 }
 
 func (r *RoleCreateRequest) Authorize(ctx http.Context) error {
+	if !helpers.HasPermission(ctx, "create_role") {
+		return helpers.NoPermissionError()
+	}
+
 	return nil
 }
 

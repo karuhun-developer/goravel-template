@@ -22,6 +22,7 @@ func V1Role() {
 		systemMiddleware.Throttle("api"),
 		middleware.AuthJwtMiddleware(),
 	).Prefix("api/v1/roles").Group(func (router route.Router) {
+		router.Get("/", roleController.Index).Name("api.v1.roles.index")
 		router.Post("/", roleController.Create).Name("api.v1.roles.create")
 		router.Put("/{id}", roleController.Update).Name("api.v1.roles.update")
 		router.Delete("/{id}", roleController.Delete).Name("api.v1.roles.delete")

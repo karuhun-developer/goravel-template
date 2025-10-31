@@ -3,6 +3,7 @@ package role
 import (
 	"github.com/goravel/framework/contracts/http"
 	"github.com/goravel/framework/contracts/validation"
+	"karuhundeveloper.com/gostarterkit/app/helpers"
 )
 
 type RoleUpdateRequest struct {
@@ -10,6 +11,10 @@ type RoleUpdateRequest struct {
 }
 
 func (r *RoleUpdateRequest) Authorize(ctx http.Context) error {
+	if !helpers.HasPermission(ctx, "update_role") {
+		return helpers.NoPermissionError()
+	}
+
 	return nil
 }
 
