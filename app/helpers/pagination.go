@@ -2,12 +2,10 @@ package helpers
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/goravel/framework/contracts/database/orm"
 	"github.com/goravel/framework/contracts/http"
 	"karuhundeveloper.com/gostarterkit/app/http/responses"
-	"karuhundeveloper.com/gostarterkit/app/models/role"
 )
 
 func OrmFilter(ctx http.Context, query orm.Query, fields []string) orm.Query {
@@ -33,8 +31,6 @@ func OrmFilter(ctx http.Context, query orm.Query, fields []string) orm.Query {
 	orderDirection := ctx.Request().Query("order", "desc")
 
 	query = query.Order(orderBy + " " + orderDirection)
-
-	fmt.Println(query.ToRawSql().Get(role.Role{}))
 
 	return query
 }
