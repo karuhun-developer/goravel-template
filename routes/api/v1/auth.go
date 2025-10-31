@@ -6,7 +6,8 @@ import (
 	systemMiddleware "github.com/goravel/framework/http/middleware"
 	authController "karuhundeveloper.com/gostarterkit/app/http/controllers/v1/auth"
 	"karuhundeveloper.com/gostarterkit/app/http/middleware"
-	authService "karuhundeveloper.com/gostarterkit/app/services/auth"
+
+	authService "karuhundeveloper.com/gostarterkit/app/services/v1/auth"
 )
 
 func V1Auth() {
@@ -31,6 +32,7 @@ func V1Auth() {
 		middleware.AuthJwtMiddleware(),
 	).Prefix("api/v1/auth").Group(func (router route.Router) {
 		// Auth routes
+		router.Put("refresh-token", authController.RefreshToken).Name("api.v1.auth.refresh-token")
 		router.Post("logout", authController.Logout).Name("api.v1.auth.logout")
 	})
 }

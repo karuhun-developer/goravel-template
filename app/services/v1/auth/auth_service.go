@@ -5,7 +5,7 @@ import (
 	"github.com/goravel/framework/errors"
 
 	"github.com/goravel/framework/facades"
-	"karuhundeveloper.com/gostarterkit/app/http/requests/auth"
+	"karuhundeveloper.com/gostarterkit/app/http/requests/v1/auth"
 	"karuhundeveloper.com/gostarterkit/app/models/user"
 )
 
@@ -42,6 +42,11 @@ func (u *AuthService) Login(ctx http.Context, loginRequest auth.LoginRequest) (t
 		return
 	}
 
+	return
+}
+
+func (u *AuthService) RefreshToken(ctx http.Context) (token string, err error) {
+	token, err = facades.Auth(ctx).Refresh()
 	return
 }
 

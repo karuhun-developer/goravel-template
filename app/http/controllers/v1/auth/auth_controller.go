@@ -2,9 +2,9 @@ package auth
 
 import (
 	"github.com/goravel/framework/contracts/http"
-	request "karuhundeveloper.com/gostarterkit/app/http/requests/auth"
+	request "karuhundeveloper.com/gostarterkit/app/http/requests/v1/auth"
 	"karuhundeveloper.com/gostarterkit/app/http/responses"
-	"karuhundeveloper.com/gostarterkit/app/services/auth"
+	"karuhundeveloper.com/gostarterkit/app/services/v1/auth"
 )
 
 type AuthController struct {
@@ -41,6 +41,16 @@ func (r *AuthController) Login(ctx http.Context) http.Response {
 	return responses.SuccessResponse(ctx, http.StatusOK, "Login Successful", http.Json{
 		"token": token,
 		"user":  user,
+	})
+}
+
+func (r *AuthController) RefreshToken(ctx http.Context) http.Response {
+	token, err := r.authService.RefreshToken(ctx)
+	if err != nil {
+		return responses.ErrorResponse(ctx, http.StatusUnauthorized, "Token Refresh Failed", err.Error())
+	}
+	return responses.SuccessResponse(ctx, http.StatusOK, "Token Refresh Successful", http.Json{
+		"token": token,
 	})
 }
 
