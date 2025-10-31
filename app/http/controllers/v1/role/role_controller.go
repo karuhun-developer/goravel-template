@@ -36,6 +36,22 @@ func (r *RoleController) Index(ctx http.Context) http.Response {
 	});
 }
 
+func (r *RoleController) Show(ctx http.Context) http.Response {
+	if !helpers.HasPermission(ctx, "view_role") {
+		return helpers.ErrorResponse(ctx, http.StatusForbidden, "Validation Error", helpers.NoPermissionError().Error())
+	}
+
+	// Show role
+	role, err := r.roleService.Show(ctx)
+
+	if err != nil {
+		return helpers.ErrorResponse(ctx, http.StatusNotFound, "Role not found", err.Error())
+	}
+
+	return helpers.SuccessResponse(ctx, http.StatusOK, "Role Retrieved Successfully", helpers.ModelToMap(role))
+}
+
+
 func (r *RoleController) Create(ctx http.Context) http.Response {
 	var roleCreateRequest request.RoleCreateRequest
 

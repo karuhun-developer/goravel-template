@@ -28,6 +28,12 @@ func OrmFilter(ctx http.Context, query orm.Query, fields []string) orm.Query {
 		}
 	}
 
+	// Order by
+	orderBy := ctx.Request().Query("order_by", "id")
+	orderDirection := ctx.Request().Query("order", "desc")
+
+	query = query.Order(orderBy + " " + orderDirection)
+
 	fmt.Println(query.ToRawSql().Get(role.Role{}))
 
 	return query

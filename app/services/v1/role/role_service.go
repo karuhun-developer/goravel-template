@@ -36,7 +36,12 @@ func (u *RoleService) List(ctx http.Context) (roleData []models.Role, pagination
 	// Filter helper
 	query = helpers.OrmFilter(ctx, query, fields)
 
-	query.Paginate(page, paginate, &roleData, &total)
+	err = query.Paginate(page, paginate, &roleData, &total)
+
+	// Return if error occurs
+	if err != nil {
+		return
+	}
 
 	pagination, err = helpers.PaginateHelper(page, paginate, total)
 
