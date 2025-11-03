@@ -28,6 +28,7 @@ func (receiver *ValidationServiceProvider) rules() []validation.Rule {
 		&rules.Unique{},
 		&rules.Exists{},
 		&rules.MaxFileSize{},
+		&rules.StrContains{},
 	}
 }
 
