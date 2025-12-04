@@ -1,6 +1,8 @@
 package rules
 
 import (
+	"fmt"
+
 	"github.com/goravel/framework/contracts/validation"
 	"github.com/goravel/framework/facades"
 )
@@ -29,7 +31,17 @@ func (receiver *Exists) Passes(_ validation.Data, val any, options ...any) bool 
 		}
 	}
 
-	requestValue := val.(string)
+	var requestValue string
+	switch v := val.(type) {
+	case string:
+		requestValue = v
+	case float64:
+		requestValue = fmt.Sprintf("%.0f", v)
+	case int:
+		requestValue = fmt.Sprintf("%d", v)
+	default:
+		return false
+	}
 
 	if len(requestValue) == 0 {
 		return false
