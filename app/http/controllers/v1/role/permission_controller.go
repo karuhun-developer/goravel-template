@@ -24,14 +24,13 @@ func (r *PermissionController) Index(ctx http.Context) http.Response {
 	}
 
 	// List permissions
-	permissions, pagination, err := r.permissionService.List(ctx)
+	_, pagination, err := r.permissionService.List(ctx)
 
 	if err != nil {
 		return helpers.ErrorResponse(ctx, http.StatusBadRequest, "Permission Listing Failed", err.Error())
 	}
 
 	return helpers.SuccessResponse(ctx, http.StatusOK, "Permissions Retrieved Successfully", http.Json{
-		"data":       permissions,
 		"pagination": pagination,
 	});
 }

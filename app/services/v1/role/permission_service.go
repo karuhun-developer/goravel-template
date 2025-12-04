@@ -43,7 +43,7 @@ func (u *PermissionService) List(ctx http.Context) (permissionData []models.Perm
 		return
 	}
 
-	pagination, err = helpers.PaginateHelper(page, paginate, total)
+	pagination, err = helpers.PaginateHelper(page, paginate, total, &permissionData)
 
 	return
 }

@@ -35,7 +35,7 @@ func OrmFilter(ctx http.Context, query orm.Query, fields []string) orm.Query {
 	return query
 }
 
-func PaginateHelper(page int, paginate int, total int64) (pagination responses.PaginationResponse, err error) {
+func PaginateHelper(page int, paginate int, total int64, data any) (pagination responses.PaginationResponse, err error) {
 	// Set pagination response
 	lastPage := int((total + int64(paginate) - 1) / int64(paginate))
 	nextPage := 0
@@ -60,6 +60,7 @@ func PaginateHelper(page int, paginate int, total int64) (pagination responses.P
 		LastPage:    lastPage,
 		NextPage:    nextPage,
 		PrevPage:    prevPage,
+		Data: 		 data,
 	}
 
 	return

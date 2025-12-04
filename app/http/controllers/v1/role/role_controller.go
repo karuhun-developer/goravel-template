@@ -24,14 +24,13 @@ func (r *RoleController) Index(ctx http.Context) http.Response {
 	}
 
 	// List roles
-	roles, pagination, err := r.roleService.List(ctx)
+	_, pagination, err := r.roleService.List(ctx)
 
 	if err != nil {
 		return helpers.ErrorResponse(ctx, http.StatusBadRequest, "Role Listing Failed", err.Error())
 	}
 
 	return helpers.SuccessResponse(ctx, http.StatusOK, "Roles Retrieved Successfully", http.Json{
-		"data":       roles,
 		"pagination": pagination,
 	});
 }

@@ -43,7 +43,7 @@ func (u *RoleService) List(ctx http.Context) (roleData []models.Role, pagination
 		return
 	}
 
-	pagination, err = helpers.PaginateHelper(page, paginate, total)
+	pagination, err = helpers.PaginateHelper(page, paginate, total, &roleData)
 
 	return
 }
