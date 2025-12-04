@@ -16,4 +16,7 @@ func Web() {
 			"version":     support.Version,
 		})
 	})
+
+	// Static files
+	facades.Route().Static("storage", "./storage/app/public")
 }

@@ -18,7 +18,7 @@ var permissionList = [...]string{
 	"view_all_",
 	"view_",
 	"create_",
-	"edit_",
+	"update_",
 	"delete_",
 	"export_",
 	"import_",
@@ -33,6 +33,7 @@ var resources = [...]string{
 	"role",
 	"permission",
 	"role_permission",
+	"anggota",
 }
 
 // User permissions
@@ -54,8 +55,8 @@ func (s *RolePermissionSeeder) Run() error {
 	facades.Cache().Flush()
 
 	// Clear the associations
-	facades.Orm().Query().Model(&superadminRole).Association("Permissions").Clear()
-	facades.Orm().Query().Model(&userRole).Association("Permissions").Clear()
+	facades.Orm().Query().Model(&role.RolePermission{}).Where("role_id", superadminRole.ID).Delete(&role.RolePermission{})
+	facades.Orm().Query().Model(&role.RolePermission{}).Where("role_id", userRole.ID).Delete(&role.RolePermission{})
 
 	// Define permissions
 	for _, resource := range resources {
@@ -65,13 +66,35 @@ func (s *RolePermissionSeeder) Run() error {
 			var permission role.Permission
 			facades.Orm().Query().Where("name", permissionName).FirstOrCreate(&permission, role.Permission{Name: permissionName})
 
-			// Assign all permissions to superadmin
-			facades.Orm().Query().Model(&superadminRole).Association("Permissions").Append(&permission)
+			// Assign all permissions to superadmin if not already associated
+			exists, _ := facades.Orm().Query().Model(&role.RolePermission{}).
+				Where("role_id", superadminRole.ID).
+				Where("permission_id", permission.ID).
+				Exists()
+			if !exists {
+				permissionRole := role.RolePermission{
+					RoleID:       superadminRole.ID,
+					PermissionID: permission.ID,
+				}
+				facades.Orm().Query().Create(&permissionRole)
+			}
 
 			// Assign specific permissions to user role
 			for _, userPerm := range userPermissions {
 				if permissionName == userPerm {
-					facades.Orm().Query().Model(&userRole).Association("Permissions").Append(&permission)
+					// Check if association already exists
+					exists, _ := facades.Orm().Query().Model(&role.RolePermission{}).
+						Where("role_id", userRole.ID).
+						Where("permission_id", permission.ID).
+						Exists()
+
+					if !exists {
+						permissionRole := role.RolePermission{
+							RoleID:       userRole.ID,
+							PermissionID: permission.ID,
+						}
+						facades.Orm().Query().Create(&permissionRole)
+					}
 				}
 			}
 		}

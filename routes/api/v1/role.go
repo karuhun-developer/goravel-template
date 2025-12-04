@@ -14,10 +14,12 @@ func V1Role() {
 	// Services
 	roleService := service.NewRoleService()
 	permissionService := service.NewPermissionService()
+	rolePermissionService := service.NewRolePermissionService()
 
 	// Controllers
 	roleController := controller.NewRoleController(roleService)
 	permissionController := controller.NewPermissionController(permissionService)
+	rolePermissionController := controller.NewRolePermissionController(rolePermissionService)
 
 	// Authenticated routes
 	facades.Route().Middleware(
@@ -37,5 +39,9 @@ func V1Role() {
 		router.Post("/permissions", permissionController.Create).Name("api.v1.permissions.create")
 		router.Put("/permissions/{id}", permissionController.Update).Name("api.v1.permissions.update")
 		router.Delete("/permissions/{id}", permissionController.Delete).Name("api.v1.permissions.delete")
+
+		// Role Permission Routes
+		router.Get("/roles/{id}/permissions", rolePermissionController.Show).Name("api.v1.roles.permissions.show")
+		router.Put("/roles/{id}/permissions", rolePermissionController.Sync).Name("api.v1.roles.permissions.sync")
 	})
 }

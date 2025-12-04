@@ -1,11 +1,7 @@
 package role
 
-import (
-	"github.com/goravel/framework/database/orm"
-)
-
 type RolePermission struct {
-	orm.Model
+	ID 				uint `gorm:"primaryKey" json:"id"`
 	RoleID       	uint
 	PermissionID 	uint
 	Role 			*Role
